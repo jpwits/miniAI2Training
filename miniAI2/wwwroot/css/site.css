@@ -1,0 +1,43 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.image-list-view {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px;
+    border: 1px solid #ddd; /* Optional: Adds a border around the container */
+}
+
+    .image-list-view img {
+        height: 140px; /* Set image height */
+        margin-right: 10px; /* Optional: Adds spacing between images */
+        flex-shrink: 0; /* Prevent the images from shrinking */
+    }
+
+/*#trainingDataCarousel .carousel-inner img {
+    width: 140px;*/ /* Adjust the width */
+    /*height: 140px;*/ /* Adjust the height */
+    /*margin: 0 auto;*/ /* Center the image */
+/*}*/
