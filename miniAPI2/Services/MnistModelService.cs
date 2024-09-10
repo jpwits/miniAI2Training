@@ -124,5 +124,15 @@ public class MnistModelService
         // Return the gradients (you may not need to return them depending on how you're updating the weights)
         return dLoss_dWeights;
     }
+    public float[] UpdateWeights(float[] weights, float[] gradients, float learningRate)
+    {
+        for (int i = 0; i < weights.Length; i++)
+        {
+            // Update weight based on gradient and learning rate
+            weights[i] -= learningRate * gradients[i];
+        }
+
+        return weights;
+    }
 
 }

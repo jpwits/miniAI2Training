@@ -57,19 +57,9 @@ function predict() {
             document.getElementById('predictionResult').innerText = error;
         });
 }
-function forwardPass() {
-    const predictionResult = document.getElementById('predictionResult').innerText;
 
-    if (!Array.isArray(predictionResult)) {
-        predictedValues = [predictionResult];
-    }
-    if (predictionResult != "") {
-        let res = parseFloat(predictionResult);
-        let ret = calculateLoss(res);
-    }
-}
 function calculateLoss(predictedValues) {
-    
+
 
     // Ask the user for the actual label (as a list for future scalability)
     const actualLabel = parseFloat(prompt("Enter the actual label:"));
@@ -82,23 +72,43 @@ function calculateLoss(predictedValues) {
 
     return losses; // Returning the list of losses
 }
-function calculateGradients(predictedValues, losses) {
+
+function forwardPass() {
+    const predictionResult = document.getElementById('predictionResult').innerText;
+
+    // Ensure predictionResult is an array or convert it to an array with one value
+    if (!Array.isArray(predictionResult)) {
+        predictedValuesGlobal = [parseFloat(predictionResult)];
+    } else {
+        predictedValuesGlobal = predictionResult.map(parseFloat);
+    }
+
+    // Calculate and store the loss in the global variable
+    if (predictionResult != "") {
+        lossGlobal = calculateLoss(predictedValuesGlobal);
+    }
+}
+
+function calculateGradients() {
+    if (predictedValuesGlobal.length === 0) {
+        alert("No prediction or loss calculated yet.");
+        return;
+    }
+
     const pixelDataText = document.getElementById('pixelData').value;
-    const pixelData = pixelDataText.split(',').map(Number); // Converts pixel data to a list of numbers
+    const pixelData = pixelDataText.split(',').map(Number);
 
-    // Prepare the payload with pixel data, predicted values, and losses
-    const requestData = {
-        pixels: pixelData,
-        predictedValues: predictedValues,
-        losses: losses
-    };
-
+    // Sending pixel data, predicted values, and loss to the server for gradient calculation
     fetch('http://localhost:5235/mnist/gradient', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(requestData) // Send the payload as JSON
+        body: JSON.stringify({
+            pixelData,
+            predictedValuesGlobal,
+            lossGlobal
+        })
     })
         .then(response => response.json())
         .then(result => {

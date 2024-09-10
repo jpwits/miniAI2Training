@@ -36,20 +36,34 @@ public class MnistController : ControllerBase
         var predictedLabel = _mnistModelService.Predict(pixels);
         return Ok(predictedLabel);
     }
-    public class requestData
+    public class RequestData
     {
-        public float[] Pixels { get; set; }
-        public float[] PredictedValues { get; set; }
-        public float[] ActualValues { get; set; }
+        public float[] pixelData { get; set; }
+        public float[] predictedValuesGlobal { get; set; }
+        public float[] lossGlobal { get; set; }
     }
 
     [HttpPost("gradient")]
-    public IActionResult gradient(requestData requestData)
+    public IActionResult gradient([FromBody] RequestData requestData)
     {
-        var gradient = _mnistModelService.CalculateGradients(requestData.Pixels, requestData.PredictedValues, requestData.ActualValues);
+        var gradient = _mnistModelService.CalculateGradients(requestData.pixelData.ToArray(),
+            requestData.predictedValuesGlobal.ToArray(),
+            requestData.lossGlobal.ToArray());
         return Ok(gradient);
     }
 
+    public class WeightData
+    {
+        public float[] weights { get; set; }
+        public float[] gradients { get; set; }
+        public float learningRate { get; set; }
+    }
 
-
+    [HttpPost("UpdateWeights")]
+    public IActionResult UpdateWeights([FromBody] WeightData weightData)
+    {
+        var updatedWeights = _mnistModelService.UpdateWeights(weightData.weights, weightData.gradients, weightData.learningRate);
+        return Ok(updatedWeights);
+    }
+   
 }
