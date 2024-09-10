@@ -36,5 +36,20 @@ public class MnistController : ControllerBase
         var predictedLabel = _mnistModelService.Predict(pixels);
         return Ok(predictedLabel);
     }
+    public class requestData
+    {
+        public float[] Pixels { get; set; }
+        public float[] PredictedValues { get; set; }
+        public float[] ActualValues { get; set; }
+    }
+
+    [HttpPost("gradient")]
+    public IActionResult gradient(requestData requestData)
+    {
+        var gradient = _mnistModelService.CalculateGradients(requestData.Pixels, requestData.PredictedValues, requestData.ActualValues);
+        return Ok(gradient);
+    }
+
+
 
 }

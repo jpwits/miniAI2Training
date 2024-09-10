@@ -74,7 +74,7 @@ public class MnistModelService
             return "No data to Train on!";
         }
     }
-    // sample : 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
     public float Predict(float[] pixels)
     {
         if (_model == null)
@@ -91,4 +91,38 @@ public class MnistModelService
 
         return prediction.PredictedLabel;
     }
+
+    public double[] CalculateGradients(float[] pixels, float[] predictedValues, float[] actualValues)
+    {
+        // Assuming these are class-level or passed as arguments
+        double[] weights = new double[pixels.Length]; // model weights for each pixel
+        double bias = 0; // single bias value for simplicity in this example
+        double learningRate = 0.01; // learning rate
+
+        // Initialize gradients
+        double[] dLoss_dWeights = new double[weights.Length]; // gradients of loss w.r.t. weights
+        double dLoss_dBias = 0; // gradient of loss w.r.t. bias
+
+        // Calculate the gradient of the loss w.r.t. the output (dL/dO)
+        // Assuming Mean Squared Error (MSE) Loss function
+        double[] dLoss_dOutputs = new double[predictedValues.Length];
+        for (int i = 0; i < predictedValues.Length; i++)
+        {
+            dLoss_dOutputs[i] = 2 * (predictedValues[i] - actualValues[i]) / predictedValues.Length;
+        }
+
+        // Calculate the gradient of the loss w.r.t. the weights (dL/dW) and bias
+        for (int i = 0; i < weights.Length; i++)
+        {
+            dLoss_dWeights[i] = dLoss_dOutputs[0] * pixels[i]; // Assuming one output
+            weights[i] -= learningRate * dLoss_dWeights[i]; // Update weights
+        }
+
+        dLoss_dBias = dLoss_dOutputs[0];
+        bias -= learningRate * dLoss_dBias; // Update bias
+
+        // Return the gradients (you may not need to return them depending on how you're updating the weights)
+        return dLoss_dWeights;
+    }
+
 }

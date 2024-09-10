@@ -36,8 +36,22 @@ body {
         flex-shrink: 0; /* Prevent the images from shrinking */
     }
 
-/*#trainingDataCarousel .carousel-inner img {
-    width: 140px;*/ /* Adjust the width */
-    /*height: 140px;*/ /* Adjust the height */
-    /*margin: 0 auto;*/ /* Center the image */
-/*}*/
+.pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(28, 20px); /* Adjust size as needed */
+    grid-template-rows: repeat(28, 20px);
+    gap: 1px; /* Gap between cells */
+}
+
+.pixel-cell {
+    width: 20px;
+    height: 20px;
+    background-color: white; /* Default color */
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+textarea {
+    width: 587px; /* Adjust the width of the textarea (4-5 times wider) */
+    resize: none;
+}
