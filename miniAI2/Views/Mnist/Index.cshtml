@@ -33,30 +33,31 @@
     <br />
     <textarea id="pixelData" rows="20" placeholder="Pixel data will be displayed here"></textarea>
     <br />
+    <div id="predictionResult"></div>
+    <br />
     <button onclick="predict()">5. Predict</button>
     <br />
-    <label for="predictionResult">Predicted Label</label>
-    <p id="predictionResult"></p>
-
-    <!-- New Button for ForwardPass -->
-
     <h4>Preview</h4>
-    <button onclick="updateImage()">6. Preview</button>
     <canvas id="pixelCanvas" width="28" height="28" style="width: 140px; height: 140px;"></canvas>
     <br />
-    <h4>Forward Pass</h4>
-    <button onclick="forwardPass()">7. ForwardPass</button>
-    <label for="forwardPassResult">Forward Pass</label>
-    <p id="forwardPassResult"></p>
+    <button onclick="updateImage()">6. Preview</button>
     <br />
+    <h4>Forward Pass</h4>
+    <br />
+    <div id="forwardPassResult"></div>
+    <br />
+    <button onclick="forwardPass()">7. ForwardPass</button>
     <h4>Calculate Gradients</h4>
+    <br />
+    <textarea id="gradientResult" rows="20" placeholder="Calculate Gradients Data :"></textarea>
+    <br />
     <button onclick="calculateGradients()">8. Calculate Gradients</button>
-    <label for="gradientResult">Gradient</label>
-    <p id="gradientResult"></p>
-    <h4>Update Weights</h4>
+    <br />
+    <h4>Update Weights</h4>    
+    <br />
+    <textarea id="updateWeightsResult" rows="20" placeholder="Updated Weights :"></textarea>
+    <br />
     <button onclick="updateWeights()">8. Update Weights</button>
-    <label for="updateWeightsResult">Update Weights</label>
-    <p id="updateWeightsResult"></p>
 
 </div>
 

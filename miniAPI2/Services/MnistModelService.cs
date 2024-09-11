@@ -131,6 +131,8 @@ public class MnistModelService
             // Update weight based on gradient and learning rate
             weights[i] -= learningRate * gradients[i];
         }
+        //_mlContext.Model.Save(_model, trainData.Schema, "mnist_model.zip");
+
 
         return weights;
     }

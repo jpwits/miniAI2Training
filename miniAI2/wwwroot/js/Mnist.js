@@ -121,7 +121,7 @@ function calculateGradients() {
 }
 
 function updateWeights() {
-    const gradientsText = document.getElementById('gradientResult').innerText;
+    const gradientsText = document.getElementById('gradientResult').value
     const gradients = gradientsText.split(',').map(Number);
     const learningRate = parseFloat("0.01");    
     const pixelDataText = document.getElementById('pixelData').value;
@@ -141,6 +141,7 @@ function updateWeights() {
     })
         .then(response => response.json())
         .then(result => {
+            document.getElementById('pixelData').value = result;
             document.getElementById('updateWeightsResult').innerText = result;
         })
         .catch(error => {
