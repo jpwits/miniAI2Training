@@ -68,7 +68,8 @@ function calculateLoss(predictedValues) {
     let losses = predictedValues.map(predictedValue => Math.pow(predictedValue - actualLabel, 2));
 
     // Display the calculated losses
-    alert("Calculated Losses (MSE): " + losses.join(", "));
+    var result = "Calculated Losses (MSE): " + losses.join(", ");
+    document.getElementById('forwardPassResult').innerText = result;
 
     return losses; // Returning the list of losses
 }
@@ -119,3 +120,30 @@ function calculateGradients() {
         });
 }
 
+function updateWeights() {
+    const gradientsText = document.getElementById('gradientResult').innerText;
+    const gradients = gradientsText.split(',').map(Number);
+    const learningRate = parseFloat("0.01");    
+    const pixelDataText = document.getElementById('pixelData').value;
+    const pixelData = pixelDataText.split(',').map(Number);
+
+    // Sending pixel data, predicted values, and loss to the server for gradient calculation
+    fetch('http://localhost:5235/mnist/UpdateWeights', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            weights : pixelData,
+            gradients,
+            learningRate
+        })
+    })
+        .then(response => response.json())
+        .then(result => {
+            document.getElementById('updateWeightsResult').innerText = result;
+        })
+        .catch(error => {
+            document.getElementById('updateWeightsResult').innerText = error;
+        });
+}
